@@ -24,6 +24,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  Offset _offset = Offset(0.4, 0.7);
 
   void _incrementCounter() {
     setState(() {
@@ -31,31 +32,13 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
-  Widget _buildApp() {
+  Widget _buildApp(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
@@ -78,6 +61,17 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return _buildApp();
+    return Transform(
+      child: GestureDetector(
+        child: _buildApp(context),
+        onPanUpdate: (details) => setState(() => _offset += details.delta),
+        onDoubleTap: () => setState(() => _offset = Offset.zero),
+      ),
+      transform: Matrix4.identity()
+        ..setEntry(3, 2, 0.001)
+        ..rotateX(0.01 * _offset.dy)
+        ..rotateY(-0.01 * _offset.dx),
+      alignment: FractionalOffset.center,
+    );
   }
 }
