@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:perspective/flipper.dart';
 
 void main() => runApp(MyApp());
 
@@ -10,7 +11,17 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(),
+      home: Scaffold(
+        body: Center(
+          child: FlipWidget(
+            child: Image.asset(
+              'images/glass.png',
+              height: 300,
+              fit: BoxFit.contain,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
